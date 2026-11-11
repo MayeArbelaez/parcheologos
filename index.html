@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcheólogos | Senderismo Consciente en Antioquia</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tinta: '#171711',
+                        oliva: '#262614',
+                        ocre: '#A6945D',
+                        arena: '#D7C6A5',
+                        crema: '#F9F8F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        editorial: ['Outfit', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(23, 23, 17, 0.75), rgba(38, 38, 20, 0.85)), url('https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #F9F8F6;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #A6945D;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-crema text-tinta font-sans antialiased custom-scrollbar selection:bg-ocre selection:text-white">
+
+    <!-- Notificación / Mensaje Personalizado (Reemplazo de alert) -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm hidden">
+        <div class="bg-crema border border-ocre/30 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl transform transition-all text-center">
+            <div id="modal-icon" class="w-16 h-16 bg-ocre/20 text-ocre rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 id="modal-title" class="text-2xl font-editorial font-bold text-oliva mb-2">¡Mensaje Enviado!</h3>
+            <p id="modal-message" class="text-tinta/80 mb-6">Gracias por conectar con nosotros. Te responderemos muy pronto por WhatsApp.</p>
+            <button onclick="closeModal()" class="w-full bg-oliva hover:bg-tinta text-arena font-medium py-3 rounded-xl transition-all shadow-md">
+                Entendido
+            </button>
+        </div>
+    </div>
+
+    <!-- Navegación Fija -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-40 bg-tinta/90 backdrop-blur-md border-b border-ocre/20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logotipo / Marca -->
+            <a href="#inicio" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full bg-ocre flex items-center justify-center text-tinta font-bold text-xl transition-transform group-hover:scale-105 shadow-md">
+                    <i class="fa-solid fa-mountain text-arena"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-arena font-editorial font-bold text-xl tracking-wide">PARCHEÓLOGOS</span>
+                    <span class="text-xs text-arena/70 tracking-widest uppercase">Senderismo Consciente</span>
+                </div>
+            </a>
+
+            <!-- Menú de Escritorio -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#inicio" class="text-arena/90 hover:text-ocre text-sm font-medium transition-colors">Inicio</a>
+                <a href="#nosotros" class="text-arena/90 hover:text-ocre text-sm font-medium transition-colors">Quiénes Somos</a>
+                <a href="#experiencias" class="text-arena/90 hover:text-ocre text-sm font-medium transition-colors">Experiencias</a>
+                <a href="#evidencias" class="text-arena/90 hover:text-ocre text-sm font-medium transition-colors">Evidencias</a>
+                <a href="#faq" class="text-arena/90 hover:text-ocre text-sm font-medium transition-colors">Preguntas</a>
+                <a href="#contacto" class="bg-ocre hover:bg-ocre/90 text-tinta font-semibold px-5 py-2.5 rounded-xl transition-all shadow-sm text-sm">
+                    Únete al Parche
+                </a>
+            </nav>
+
+            <!-- Botón Menú Móvil -->
+            <button id="menu-btn" class="md:hidden text-arena focus:outline-none p-2 rounded-lg hover:bg-oliva/50">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-oliva border-b border-ocre/30 px-6 py-6 space-y-4">
+            <a href="#inicio" class="block text-arena hover:text-ocre font-medium transition-colors mobile-link">Inicio</a>
+            <a href="#nosotros" class="block text-arena hover:text-ocre font-medium transition-colors mobile-link">Quiénes Somos</a>
+            <a href="#experiencias" class="block text-arena hover:text-ocre font-medium transition-colors mobile-link">Experiencias</a>
+            <a href="#evidencias" class="block text-arena hover:text-ocre font-medium transition-colors mobile-link">Evidencias</a>
+            <a href="#faq" class="block text-arena hover:text-ocre font-medium transition-colors mobile-link">Preguntas</a>
+            <a href="#contacto" class="block text-center bg-ocre text-tinta font-semibold py-3 rounded-xl mobile-link">
+                Únete al Parche
+            </a>
+        </div>
+    </header>
+
+    <!-- Sección Hero (Inicio) -->
+    <section id="inicio" class="hero-bg min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8 relative">
+        <div class="max-w-4xl mx-auto text-center z-10 py-20">
+            <div class="inline-flex items-center gap-2 bg-ocre/20 border border-ocre/40 text-arena px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest mb-6 backdrop-blur-md">
+                <i class="fa-solid fa-leaf text-ocre"></i> Naturaleza, Consciencia y Comunidad en Antioquia
+            </div>
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-editorial font-extrabold text-arena tracking-tight mb-6 leading-tight">
+                Convierte la naturaleza en una <span class="text-ocre">experiencia consciente</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-arena/80 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                Caminatas sin prisas ni juicios. Un espacio para conectar con la montaña, la mente y personas que comparten tu misma pasión por el autoconocimiento.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#experiencias" class="w-full sm:w-auto bg-ocre hover:bg-ocre/90 text-tinta font-bold px-8 py-4 rounded-xl transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-compass"></i> Ver Experiencias
+                </a>
+                <a href="https://wa.me/573000000000?text=Hola,%20quiero%20saber%20más%20sobre%20las%20próximas%20caminatas%20de%20Parcheólogos" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto bg-transparent border-2 border-arena/40 hover:border-ocre text-arena font-semibold px-8 py-4 rounded-xl transition-all hover:bg-arena/10 flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-whatsapp text-green-400 text-lg"></i> Hablar por WhatsApp
+                </a>
+            </div>
+
+            <!-- Estadísticas rápidas -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-16 pt-12 border-t border-arena/20 text-center">
+                <div>
+                    <div class="text-3xl sm:text-4xl font-editorial font-bold text-arena">+3</div>
+                    <div class="text-xs text-arena/70 uppercase tracking-wider mt-1">Años de Trayectoria</div>
+                </div>
+                <div>
+                    <div class="text-3xl sm:text-4xl font-editorial font-bold text-arena">100%</div>
+                    <div class="text-xs text-arena/70 uppercase tracking-wider mt-1">Grupos Reducidos</div>
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                    <div class="text-3xl sm:text-4xl font-editorial font-bold text-arena">Antioquia</div>
+                    <div class="text-xs text-arena/70 uppercase tracking-wider mt-1">Valle de Aburrá & Páramos</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Quiénes Somos (Nosotros) -->
+    <section id="nosotros" class="py-24 bg-crema relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-block text-ocre font-semibold text-sm tracking-widest uppercase mb-3">Nuestra Esencia</div>
+                    <h2 class="text-3xl sm:text-5xl font-editorial font-bold text-oliva mb-6 leading-tight">
+                        Una experiencia cercana, humana y sin presiones.
+                    </h2>
+                    <p class="text-tinta/80 text-lg mb-6 leading-relaxed">
+                        Nacimos hace aproximadamente 3 años del profundo amor por la montaña y el deseo genuino de compartir el camino con personas afines. En <strong class="text-oliva">Parcheólogos</strong> no competimos contra el cronómetro; caminamos a tu propio ritmo.
+                    </p>
+                    <p class="text-tinta/80 mb-8 leading-relaxed">
+                        Cada salida es una oportunidad para integrar la aventura al aire libre con la reflexión personal, el cuidado ambiental y el bienestar mental en grupos reducidos que garantizan un trato cálido y personalizado.
+                    </p>
+
+                    <!-- Diferenciales -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white p-5 rounded-2xl border border-ocre/20 shadow-sm flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-ocre/10 text-ocre flex items-center justify-center shrink-0 font-bold">
+                                <i class="fa-solid fa-feather"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-editorial font-bold text-oliva mb-1">Ritmo Propio</h4>
+                                <p class="text-xs text-tinta/70">Sin afanes, sin juicios y con total libertad para disfrutar.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-ocre/20 shadow-sm flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-ocre/10 text-ocre flex items-center justify-center shrink-0 font-bold">
+                                <i class="fa-solid fa-people-group"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-editorial font-bold text-oliva mb-1">Trato Cercano</h4>
+                                <p class="text-xs text-tinta/70">Acompañamiento humano, seguro e integrador en cada ruta.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1000&auto=format&fit=crop" alt="Senderistas en la montaña" class="w-full h-[500px] object-cover" onerror="this.src='https://placehold.co/600x500/262614/D7C6A5?text=Parcheologos+Ruta'">
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 bg-oliva text-arena p-6 rounded-2xl shadow-xl hidden sm:block max-w-xs border border-ocre/30">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fa-solid fa-quote-left text-ocre text-xl"></i>
+                            <span class="font-editorial font-bold text-sm">Filosofía de Ruta</span>
+                        </div>
+                        <p class="text-xs text-arena/80">"Conectar con la montaña es también conectar con nuestro interior."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Experiencias y Rutas -->
+    <section id="experiencias" class="py-24 bg-oliva text-arena relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-ocre font-semibold text-sm tracking-widest uppercase mb-3 block">Explora el Territorio</span>
+                <h2 class="text-3xl sm:text-5xl font-editorial font-bold text-arena mb-6">
+                    Nuestras Experiencias de Fin de Semana
+                </h2>
+                <p class="text-arena/80 text-lg">
+                    Diseñadas para jóvenes y adultos (20 a 45 años) del Valle de Aburrá y Antioquia que buscan aventura, desconexión y crecimiento personal.
+                </p>
+
+                <!-- Filtros de Experiencias -->
+                <div class="flex flex-wrap justify-center gap-3 mt-8">
+                    <button onclick="filterExperiences('todos')" class="filter-btn active bg-ocre text-tinta px-5 py-2 rounded-xl text-sm font-semibold transition-all">Todas</button>
+                    <button onclick="filterExperiences('principiante')" class="filter-btn bg-tinta/50 hover:bg-ocre/40 text-arena px-5 py-2 rounded-xl text-sm font-medium border border-ocre/30 transition-all">Iniciación</button>
+                    <button onclick="filterExperiences('intermedio')" class="filter-btn bg-tinta/50 hover:bg-ocre/40 text-arena px-5 py-2 rounded-xl text-sm font-medium border border-ocre/30 transition-all">Intermedio</button>
+                    <button onclick="filterExperiences('avanzado')" class="filter-btn bg-tinta/50 hover:bg-ocre/40 text-arena px-5 py-2 rounded-xl text-sm font-medium border border-ocre/30 transition-all">Páramos y Cumbres</button>
+                </div>
+            </div>
+
+            <!-- Grid de Experiencias -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="experiences-grid">
+                
+                <!-- Tarjeta 1 -->
+                <div class="exp-card bg-tinta rounded-3xl overflow-hidden border border-ocre/20 shadow-xl flex flex-col justify-between" data-category="intermedio">
+                    <div>
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" alt="Páramo de Belmira" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" onerror="this.src='https://placehold.co/600x400/171711/D7C6A5?text=Paramo+de+Belmira'">
+                            <span class="absolute top-4 right-4 bg-ocre text-tinta text-xs font-bold px-3 py-1.5 rounded-full uppercase">Intermedio</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 text-ocre text-xs font-semibold mb-2">
+                                <i class="fa-solid fa-location-dot"></i> Antioquia • Páramo de Belmira
+                            </div>
+                            <h3 class="text-2xl font-editorial font-bold text-arena mb-3">Ascenso al Páramo de Belmira</h3>
+                            <p class="text-arena/70 text-sm mb-6 leading-relaxed">
+                                Una travesía mística entre frailejones, neblina y fuentes hídricas. Ideal para introspección y contemplación profunda.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-arena/10 flex items-center justify-between mt-4">
+                        <span class="text-xs text-arena/60"><i class="fa-solid fa-clock text-ocre mr-1"></i> Fin de semana</span>
+                        <a href="https://wa.me/573000000000?text=Hola,%20quiero%20más%20información%20sobre%20el%20Páramo%20de%20Belmira" target="_blank" rel="noopener noreferrer" class="bg-ocre hover:bg-ocre/90 text-tinta font-semibold px-4 py-2 rounded-xl text-sm transition-all flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp"></i> Consultar cupos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2 -->
+                <div class="exp-card bg-tinta rounded-3xl overflow-hidden border border-ocre/20 shadow-xl flex flex-col justify-between" data-category="principiante">
+                    <div>
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop" alt="Morrón de Copacabana" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" onerror="this.src='https://placehold.co/600x400/171711/D7C6A5?text=Morron+de+Copacabana'">
+                            <span class="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase">Iniciación</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 text-ocre text-xs font-semibold mb-2">
+                                <i class="fa-solid fa-location-dot"></i> Valle de Aburrá • Morrón de Copacabana
+                            </div>
+                            <h3 class="text-2xl font-editorial font-bold text-arena mb-3">Ruta al Morrón de Copacabana</h3>
+                            <p class="text-arena/70 text-sm mb-6 leading-relaxed">
+                                Un recorrido accesible y lleno de vistas panorámicas del valle. Perfecto para principiantes que buscan iniciar su camino en el senderismo.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-arena/10 flex items-center justify-between mt-4">
+                        <span class="text-xs text-arena/60"><i class="fa-solid fa-clock text-ocre mr-1"></i> Medio día</span>
+                        <a href="https://wa.me/573000000000?text=Hola,%20quiero%20más%20información%20sobre%20el%20Morrón%20de%20Copacabana" target="_blank" rel="noopener noreferrer" class="bg-ocre hover:bg-ocre/90 text-tinta font-semibold px-4 py-2 rounded-xl text-sm transition-all flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp"></i> Consultar cupos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3 -->
+                <div class="exp-card bg-tinta rounded-3xl overflow-hidden border border-ocre/20 shadow-xl flex flex-col justify-between" data-category="avanzado">
+                    <div>
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&w=800&auto=format&fit=crop" alt="Cumbres y Cascadas de Antioquia" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" onerror="this.src='https://placehold.co/600x400/171711/D7C6A5?text=Cascadas+Antioquia'">
+                            <span class="absolute top-4 right-4 bg-amber-700 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase">Avanzado</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-2 text-ocre text-xs font-semibold mb-2">
+                                <i class="fa-solid fa-location-dot"></i> Antioquia • Destinos Sorpresa
+                            </div>
+                            <h3 class="text-2xl font-editorial font-bold text-arena mb-3">Expedición Cumbres y Cascadas</h3>
+                            <p class="text-arena/70 text-sm mb-6 leading-relaxed">
+                                Caminatas de alta exigencia física y mental que culminan en caídas de agua cristalina y miradores ocultos de la geografía antioqueña.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 border-t border-arena/10 flex items-center justify-between mt-4">
+                        <span class="text-xs text-arena/60"><i class="fa-solid fa-clock text-ocre mr-1"></i> Fin de semana completo</span>
+                        <a href="https://wa.me/573000000000?text=Hola,%20quiero%20más%20información%20sobre%20la%20Expedición%20Cumbres%20y%20Cascadas" target="_blank" rel="noopener noreferrer" class="bg-ocre hover:bg-ocre/90 text-tinta font-semibold px-4 py-2 rounded-xl text-sm transition-all flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp"></i> Consultar cupos
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Evidencias y Galería -->
+    <section id="evidencias" class="py-24 bg-crema">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-ocre font-semibold text-sm tracking-widest uppercase mb-3 block">Momentos Reales</span>
+                <h2 class="text-3xl sm:text-5xl font-editorial font-bold text-oliva mb-6">
+                    Evidencias de Comunidad en Ruta
+                </h2>
+                <p class="text-tinta/80 text-lg">
+                    Imágenes auténticas capturadas en escala andina, senderos vivos y momentos de integración genuina entre parcheólogos.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="rounded-3xl overflow-hidden shadow-lg h-80 relative group">
+                    <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=800&auto=format&fit=crop" alt="Grupo en cumbre" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://placehold.co/600x600/262614/D7C6A5?text=Grupo+Parcheologos'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-tinta/80 via-transparent to-transparent flex items-end p-6">
+                        <span class="text-arena font-editorial font-semibold text-lg">Integración en cumbre</span>
+                    </div>
+                </div>
+                <div class="rounded-3xl overflow-hidden shadow-lg h-80 relative group">
+                    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=800&auto=format&fit=crop" alt="Sendero andino" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://placehold.co/600x600/262614/D7C6A5?text=Sendero+Andino'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-tinta/80 via-transparent to-transparent flex items-end p-6">
+                        <span class="text-arena font-editorial font-semibold text-lg">Escala por caminos ancestrales</span>
+                    </div>
+                </div>
+                <div class="rounded-3xl overflow-hidden shadow-lg h-80 relative group">
+                    <img src="https://images.unsplash.com/photo-1533240332313-0db49b459ad5?q=80&w=800&auto=format&fit=crop" alt="Naturaleza y bienestar" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://placehold.co/600x600/262614/D7C6A5?text=Naturaleza+Antioquia'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-tinta/80 via-transparent to-transparent flex items-end p-6">
+                        <span class="text-arena font-editorial font-semibold text-lg">Páramos y paisajes de Antioquia</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Preguntas Frecuentes (FAQ) -->
+    <section id="faq" class="py-24 bg-white border-t border-ocre/20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-ocre font-semibold text-sm tracking-widest uppercase mb-3 block">Resolvemos tus dudas</span>
+                <h2 class="text-3xl sm:text-5xl font-editorial font-bold text-oliva mb-6">
+                    Preguntas Frecuentes
+                </h2>
+                <p class="text-tinta/80 text-lg">
+                    Todo lo que necesitas saber antes de dar el primer paso con nosotros.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Acordeón 1 -->
+                <div class="border border-ocre/20 rounded-2xl overflow-hidden transition-all">
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left font-editorial font-bold text-oliva text-lg bg-crema hover:bg-ocre/10 transition-colors">
+                        <span>¿Necesito experiencia previa en senderismo?</span>
+                        <i class="fa-solid fa-chevron-down text-ocre transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden p-6 bg-white text-tinta/80 text-sm leading-relaxed border-t border-ocre/10">
+                        No necesariamente. Contamos con rutas de iniciación y caminatas de diversos niveles. Lo más importante es tu disposición para caminar a tu propio ritmo, disfrutar de la naturaleza y compartir en comunidad sin afanes competitivos.
+                    </div>
+                </div>
+
+                <!-- Acordeón 2 -->
+                <div class="border border-ocre/20 rounded-2xl overflow-hidden transition-all">
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left font-editorial font-bold text-oliva text-lg bg-crema hover:bg-ocre/10 transition-colors">
+                        <span>¿Qué debo llevar a las caminatas?</span>
+                        <i class="fa-solid fa-chevron-down text-ocre transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden p-6 bg-white text-tinta/80 text-sm leading-relaxed border-t border-ocre/10">
+                        Recomendamos calzado con buen agarre (preferiblemente botas de hiking), ropa cómoda y transpirable, protector solar, gorra, impermeable o capa de agua, hidratación constante (mínimo 1.5 litros) y snacks energéticos. Al inscribirte te enviamos una guía detallada.
+                    </div>
+                </div>
+
+                <!-- Acordeón 3 -->
+                <div class="border border-ocre/20 rounded-2xl overflow-hidden transition-all">
+                    <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-6 text-left font-editorial font-bold text-oliva text-lg bg-crema hover:bg-ocre/10 transition-colors">
+                        <span>¿Cómo funcionan las inscripciones y los grupos?</span>
+                        <i class="fa-solid fa-chevron-down text-ocre transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden p-6 bg-white text-tinta/80 text-sm leading-relaxed border-t border-ocre/10">
+                        Trabajamos con grupos reducidos para garantizar un acompañamiento seguro, cercano y humano. Las inscripciones se gestionan directamente a través de nuestro canal de WhatsApp para resolver tus dudas de forma inmediata.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contacto y Cierre -->
+    <section id="contacto" class="py-24 bg-tinta text-arena relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-ocre font-semibold text-sm tracking-widest uppercase mb-3 block">Conecta con nosotros</span>
+                    <h2 class="text-3xl sm:text-5xl font-editorial font-bold text-arena mb-6">
+                        ¿Listo para unirte al siguiente parche?
+                    </h2>
+                    <p class="text-arena/80 text-lg mb-8 leading-relaxed">
+                        Escríbenos o conéctate directamente por WhatsApp para conocer las próximas fechas, destinos y disponibilidad de cupos en Antioquia.
+                    </p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center gap-4 text-arena/90">
+                            <div class="w-12 h-12 rounded-xl bg-ocre/20 text-ocre flex items-center justify-center text-lg">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-arena/60 uppercase">WhatsApp Directo</div>
+                                <div class="font-semibold text-arena">+57 300 000 0000</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-arena/90">
+                            <div class="w-12 h-12 rounded-xl bg-ocre/20 text-ocre flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-arena/60 uppercase">Ubicación y Cobertura</div>
+                                <div class="font-semibold text-arena">Medellín & Valle de Aburrá, Antioquia</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/573000000000?text=Hola,%20quiero%20unirme%20al%20siguiente%20parche" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-ocre hover:bg-ocre/90 text-tinta font-bold px-8 py-4 rounded-xl transition-all shadow-lg text-lg">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i> Iniciar Chat en WhatsApp
+                    </a>
+                </div>
+
+                <!-- Formulario de Contacto -->
+                <div class="bg-oliva border border-ocre/30 p-8 rounded-3xl shadow-2xl">
+                    <h3 class="text-2xl font-editorial font-bold text-arena mb-6">Déjanos tu mensaje</h3>
+                    <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-arena/70 mb-2 font-medium">Tu Nombre</label>
+                            <input type="text" id="name" required class="w-full bg-tinta border border-ocre/30 rounded-xl px-4 py-3 text-arena focus:outline-none focus:border-ocre transition-colors" placeholder="Ej. Camila Restrepo">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-arena/70 mb-2 font-medium">WhatsApp / Teléfono</label>
+                            <input type="tel" id="phone" required class="w-full bg-tinta border border-ocre/30 rounded-xl px-4 py-3 text-arena focus:outline-none focus:border-ocre transition-colors" placeholder="Ej. 300 123 4567">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-arena/70 mb-2 font-medium">Mensaje o Interés</label>
+                            <textarea id="message" rows="4" required class="w-full bg-tinta border border-ocre/30 rounded-xl px-4 py-3 text-arena focus:outline-none focus:border-ocre transition-colors" placeholder="¿A qué caminata te gustaría asistir?"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-ocre hover:bg-ocre/90 text-tinta font-bold py-4 rounded-xl transition-all shadow-md">
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <a href="https://wa.me/573000000000?text=Hola,%20vengo%20desde%20la%20web%20y%20quiero%20información" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-40 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-2xl transition-transform hover:scale-110">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-black text-arena/60 py-12 border-t border-ocre/20 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-ocre flex items-center justify-center text-tinta font-bold text-sm">
+                    <i class="fa-solid fa-mountain text-arena"></i>
+                </div>
+                <span class="text-arena font-editorial font-bold text-lg">PARCHEÓLOGOS</span>
+            </div>
+            <p>© 2026 Parcheólogos. Senderismo consciente en Colombia. Todos los derechos reservados.</p>
+            <div class="flex gap-4 text-lg">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-ocre transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" class="hover:text-ocre transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Interactividad -->
+    <script>
+        // Menú móvil toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Filtrado de Experiencias
+        function filterExperiences(category) {
+            const cards = document.querySelectorAll('.exp-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-ocre', 'text-tinta');
+                btn.classList.add('bg-tinta/50', 'text-arena');
+            });
+
+            event.target.classList.remove('bg-tinta/50', 'text-arena');
+            event.target.classList.add('bg-ocre', 'text-tinta');
+
+            cards.forEach(card => {
+                if (category === 'todos' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Acordeón FAQ
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Manejo de Formulario sin alert
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const modal = document.getElementById('custom-modal');
+            const messageEl = document.getElementById('modal-message');
+            
+            messageEl.textContent = `¡Gracias ${name}! Hemos recibido tu mensaje con éxito. Nos pondremos en contacto contigo a la brevedad.`;
+            modal.classList.remove('hidden');
+            document.getElementById('contact-form').reset();
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
